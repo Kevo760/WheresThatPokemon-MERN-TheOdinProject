@@ -1,11 +1,42 @@
 import './App.css';
 import { SiteNav } from './components/Navbar';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { Game } from './pages/Game';
+import { Settings } from './pages/Settings';
+import { Scores } from './pages/Scores';
 
 function App() {
   return (
     <div className="App">
-      <SiteNav />
+      <BrowserRouter>
+        <SiteNav />
+        <div className='pages'>
+          <Routes>
 
+            <Route
+              path='/'
+              element={<Home />} 
+            />
+
+            <Route
+              path='/game'
+              element={<Game />} 
+            />
+
+            <Route
+              path='/scores'
+              element={<Scores />} 
+            />
+
+            <Route
+              path='/settings'
+              element={<Settings />} 
+            />
+
+          </Routes>
+        </div>
+      </BrowserRouter>
     </div>
   );
 }
