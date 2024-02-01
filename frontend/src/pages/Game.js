@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import bg from '../images/bg.png'
 
 const GamePage = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-top: 50px;
   background-color: black;
+  img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 40px;
+  }
 `
 
 
@@ -28,7 +30,7 @@ export const Game = () => {
       <div className='gameboard' onClick={mouseClick}>
         <img
           src={bg}
-          alt='Game board image'
+          alt='Game board'
           className="img-fluid"
         />
       </div>
