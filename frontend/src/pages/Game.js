@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import bg from '../images/bg.png'
+import Timerbar from '../components/Timerbar';
 
 const GamePage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   background-color: black;
+  margin-top: 100px;
   img {
     width: 100%;
     height: 100%;
@@ -26,7 +32,10 @@ export const Game = () => {
   }
 
   return (
+    <>
+    <Timerbar />
     <GamePage>
+      
       <div className='gameboard' onClick={mouseClick}>
         <img
           src={bg}
@@ -35,5 +44,6 @@ export const Game = () => {
         />
       </div>
     </GamePage>
+    </>
   )
 }

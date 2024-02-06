@@ -2,12 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const NavBar = styled.nav`
+  z-index: 2;
    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
    .navbar-brand {
     font-weight: bold;
    }
    .yellow {
     color: rgb(252, 163, 17);
+   }
+   .nav-item {
+    text-align: center;
    }
 `
 
@@ -28,9 +32,6 @@ export const SiteNav = () => {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/scores">Scores</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/settings">Settings</a>
               </li>
             </ul>
           </div>

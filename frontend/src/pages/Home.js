@@ -70,6 +70,12 @@ export const Home = () => {
         <p>Find how fast you can find the pokemon below.</p>
       </div>
       <div className='home-icons'>
+
+      <div className='iconbox'>
+          <img src="https://img.pokemondb.net/sprites/black-white/normal/galvantula.png" alt="Galvantula" />
+          <p>Galvantula</p>
+        </div>
+
         <div className='iconbox'>
           <img src="https://img.pokemondb.net/sprites/black-white/normal/darumaka.png" alt="Darumaka" />
           <p>Darumaka</p>
@@ -80,11 +86,8 @@ export const Home = () => {
           <p>Spearow</p>
         </div>
 
-        <div className='iconbox'>
-          <img src="https://img.pokemondb.net/sprites/black-white/normal/galvantula.png" alt="Galvantula" />
-          <p>Galvantula</p>
-        </div>
       </div>
+      
       <button>Start Game</button>
     </HomePage>
   )
