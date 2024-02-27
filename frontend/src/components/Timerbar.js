@@ -34,6 +34,12 @@ const TimerbarBox = styled.div`
     .test {
       opacity: 50%;
     }
+    .time-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 `
 
 const Timerbar = () => {
@@ -60,7 +66,11 @@ const Timerbar = () => {
           <img src="https://img.pokemondb.net/sprites/black-white/normal/spearow.png" alt="Spearow" style={{ opacity: char3 }}/>
         </div>
         <hr></hr>
-        <p className='time-text'>Time: <span>100(s)</span></p>
+        <div className='time-box'>
+          <p>Estimated Time</p>
+          <p className='time-text'>100(s)</p>
+        </div>
+        
     </TimerbarBox>
   )
 }

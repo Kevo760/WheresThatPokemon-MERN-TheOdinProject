@@ -75,7 +75,6 @@ export const Home = () => {
           <img src="https://img.pokemondb.net/sprites/black-white/normal/galvantula.png" alt="Galvantula" />
           <p>Galvantula</p>
         </div>
-
         <div className='iconbox'>
           <img src="https://img.pokemondb.net/sprites/black-white/normal/darumaka.png" alt="Darumaka" />
           <p>Darumaka</p>
