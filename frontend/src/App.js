@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Game } from './pages/Game';
 import { Scores } from './pages/Scores';
+import { SelectBoxProvider } from './context/SelectBoxContext';
 
 function App() {
   return (
@@ -20,7 +21,11 @@ function App() {
 
             <Route
               path='/game'
-              element={<Game />} 
+              element={
+                <SelectBoxProvider>
+                  <Game />
+                </SelectBoxProvider>
+              } 
             />
 
             <Route

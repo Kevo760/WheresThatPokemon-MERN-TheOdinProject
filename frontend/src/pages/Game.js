@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import bg from '../images/bg.png'
 import Timerbar from '../components/Timerbar';
 import SelectionBox from '../components/SelectionBox';
+import { useSelectBox } from '../hooks/useSelectBox';
 
 const GamePage = styled.div`
   display: flex;
@@ -22,48 +23,45 @@ const GamePage = styled.div`
 
 
 export const Game = () => {
+  const {showSelectionBox, dispatch} = useSelectBox()
+
   const [xAxis, setXAxis] = useState(null);
   const [yAxis, setYAxis] = useState(null);
-  const [imgClient, setImgClient] = useState(null)
-  const [selectBoxStyle, setSelectBoxStyle] = useState({
-    left: 0,
-    top: 0,
-    display: "none"
-  })
+
 
   const mouseClick = (e)=> {
     // Gets image div sizing
     const imgInfo = e.target.getBoundingClientRect();
     const { offsetX, offsetY } = e.nativeEvent;
 
-
-    setImgClient(imgInfo)
+    // Accurate position regardless of window size
     setXAxis(Math.round((offsetX / imgInfo.width) * 100));
     setYAxis(Math.round((offsetY / imgInfo.height) * 100));
 
-    setCordinates(e.clientX, e.clientY)
+
+    const position = {left: e.clientX + 5, top: e.clientY, bottom: imgInfo.bottom, right: imgInfo.right}
+    dispatch({type: 'DISPLAY', payload: position})
+
   }
 
-  // Sends style to page
-  const setCordinates = (x,y) => {
-    setSelectBoxStyle({
-      left: `${x + 5}`,         
-      top:  `${y}`,
-      display: "block"
-    })
-  }
+
 
   return (
     <>
     <Timerbar />
-    <GamePage onClick={mouseClick}>
+    <GamePage >
         <img
           src={bg}
           alt='Game board'
           className="img-fluid"
+          onClick={mouseClick}
         />
 
-        <SelectionBox selectBoxStyle={selectBoxStyle} imgClient={imgClient}/>
+        {
+          showSelectionBox &&
+          <SelectionBox />
+        }
+        
     </GamePage>
     </>
   )

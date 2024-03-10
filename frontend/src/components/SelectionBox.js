@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useSelectBox } from '../hooks/useSelectBox';
 
 const Selectionbox = styled.div`
-  display: ${props => props.$setdisplay || "block"};
-  left: ${props => props.$setleft + "px" || 0};
-  top: ${props => props.$settop + "px" || 0};
+  left: ${props => props.$setleft + "px"};
+  top: ${props => props.$settop + "px" };
   position: fixed;
   width: 120px;
   height: fit-content;
@@ -41,14 +41,17 @@ const Selectionbox = styled.div`
   }
 `
 
-const SelectionBox = (props) => {
+const SelectionBox = () => {
   const [leftLocation, setLeftLocation] = useState();
   const [topLocation, setTopLocation] = useState();
+  const {showSelectionBox, selectionStyle, dispatch} = useSelectBox();
 
-  const {selectBoxStyle, imgClient} = props;
-  const {top, left, display} = selectBoxStyle;
+  const {top, left, bottom, right} = selectionStyle;
 
-  const {bottom, right} = imgClient ? imgClient : 0;
+  const handleClick = () => {
+
+    dispatch({type: 'HIDE'})
+  }
 
   
   useEffect(() => {
@@ -73,19 +76,19 @@ const SelectionBox = (props) => {
     }
 
     checkOffBorders();
-  }, [selectBoxStyle, imgClient])
+  }, [top, left, bottom, right])
 
   return (
-    <Selectionbox $settop={topLocation} $setleft={leftLocation} $setdisplay={display}>
-      <div className='selection-bar'>
+    <Selectionbox $settop={topLocation} $setleft={leftLocation}>
+      <div className='selection-bar'onClick={e => handleClick()}>
         <span>Galvantula</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/galvantula.png" alt="Galvantula" />
       </div>
-      <div className='selection-bar'>
+      <div className='selection-bar' onClick={e => handleClick()}>
         <span>Darumaka</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/darumaka.png" alt="Darumaka" />
       </div>
-      <div className='selection-bar'>
+      <div className='selection-bar' onClick={e => handleClick()}>
         <span>Spearow</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/spearow.png" alt="Spearow" />
       </div>
