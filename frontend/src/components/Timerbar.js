@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useTimer } from '../hooks/useTimer';
+import { useCharacterIcon } from '../hooks/useCharacterIcon';
+
 
 const TimerbarBox = styled.div`
     position: fixed;
@@ -47,17 +50,31 @@ const Timerbar = () => {
   const [char2, setChar2] = useState(1);
   const [char3, setChar3] = useState(1);
 
-  const foundChar = (char) => {
-    if(1) {
-      setChar1(.5)
-    } else if(2) {
-      setChar2(.5)
-    } else if(3) {
-      setChar3(.5)
-    } else return
+  const {spearow, darumaka, galvantula} = useCharacterIcon();
+  const { time } = useTimer();
 
-  }
 
+  let milliseconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
+  let seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
+  let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
+
+  useEffect(() => {
+
+    const checkForFoundCharacters = () => {
+      if(galvantula) {
+        setChar1(.5)
+      } else if(darumaka) {
+        setChar2(.5)
+      } else if(spearow) {
+        setChar3(.5)
+      } else return
+    }
+
+    checkForFoundCharacters()
+    
+  }, [spearow, darumaka, galvantula])
+  
+  
   return (
     <TimerbarBox>
         <div className='icon-status'>
@@ -67,8 +84,8 @@ const Timerbar = () => {
         </div>
         <hr></hr>
         <div className='time-box'>
-          <p>Estimated Time</p>
-          <p className='time-text'>100(s)</p>
+          <p>Estimated Time:</p>
+          <p className='time-text'>{minutes + ':' + seconds + ':' + milliseconds}</p>
         </div>
         
     </TimerbarBox>

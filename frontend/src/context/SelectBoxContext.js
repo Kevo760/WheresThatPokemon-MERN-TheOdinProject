@@ -16,7 +16,7 @@ export const selectBoxReducer = (state, action) => {
             return state
         
     }
-}
+};
 
 export const SelectBoxProvider = ({ children }) => {
     const [state, dispatch] = useReducer(selectBoxReducer, {

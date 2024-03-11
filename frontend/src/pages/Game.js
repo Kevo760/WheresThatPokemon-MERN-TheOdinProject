@@ -4,6 +4,8 @@ import bg from '../images/bg.png'
 import Timerbar from '../components/Timerbar';
 import SelectionBox from '../components/SelectionBox';
 import { useSelectBox } from '../hooks/useSelectBox';
+import { TimerProvider } from '../context/timerContext';
+import { CharacterIconProvider } from '../context/CharacterIconContext';
 
 const GamePage = styled.div`
   display: flex;
@@ -48,7 +50,13 @@ export const Game = () => {
 
   return (
     <>
-    <Timerbar />
+    <CharacterIconProvider>
+
+    
+    <TimerProvider>
+        <Timerbar />
+    </TimerProvider>
+    
     <GamePage >
         <img
           src={bg}
@@ -63,6 +71,7 @@ export const Game = () => {
         }
         
     </GamePage>
+    </CharacterIconProvider>
     </>
   )
 }
