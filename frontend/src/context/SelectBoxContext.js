@@ -19,12 +19,12 @@ export const selectBoxReducer = (state, action) => {
 };
 
 export const SelectBoxProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(selectBoxReducer, {
+    const [state, dispatchShowSelection] = useReducer(selectBoxReducer, {
         showSelectionBox: false
     });
 
     return (
-        <SelectBoxContext.Provider value={{...state, dispatch}}>
+        <SelectBoxContext.Provider value={{...state, dispatchShowSelection}}>
             {
                 children
             }

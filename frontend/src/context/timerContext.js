@@ -6,10 +6,22 @@ export const TimerReducer = (state, action) => {
     switch(action.type) {
         case 'START': 
             return {
+                ...state,
+                start: true,
+            }
+        case 'TIMER':
+            return {
+                ...state,
                 time: action.payload
+            }
+        case 'STOP': 
+            return {
+                ...state,
+                start: false
             }
         case 'RESET':
             return {
+                start: false,
                 time: 0
             }
         default:
@@ -18,24 +30,30 @@ export const TimerReducer = (state, action) => {
 };
 
 export const TimerProvider = ({children}) => {
-    const [state, dispatch] = useReducer(TimerReducer, {
+    const [state, dispatchTimer] = useReducer(TimerReducer, {
+        start: true,
         time: 0
-    })
+    });
 
-    let startTime = new Date()
+    let startTime = new Date();
 
     useEffect(() => {
+
+        if(!state.start) {
+            return;
+        }
+
         let interval = setInterval(() => {
             // Fixes issues where timer stop when tab is inactive
             const left = state.time + (new Date() - startTime)
-            dispatch({type: "START" , payload: left + 10})
+            dispatchTimer({type: "TIMER" , payload: left + 10})
         }, 10);
 
         return () => clearInterval(interval);
     })
 
     return (
-        <TimerContext.Provider value={{...state, dispatch}}>
+        <TimerContext.Provider value={{...state, dispatchTimer}}>
             {
                 children
             }

@@ -26,14 +26,14 @@ export const CharIconReducer = (state, action) => {
 }
 
 export const CharacterIconProvider = ({children}) => {
-    const [state, dispatch] = useReducer(CharIconReducer, {
+    const [state, dispatchCharacterIcon] = useReducer(CharIconReducer, {
         spearow: false,
         darumak: false,
         galvantula: false
     })
 
     return (
-        <CharacterIconContext.Provider value={{state, dispatch}}>
+        <CharacterIconContext.Provider value={{state, dispatchCharacterIcon}}>
             {
                 children
             }

@@ -44,14 +44,15 @@ const Selectionbox = styled.div`
 const SelectionBox = () => {
   const [leftLocation, setLeftLocation] = useState();
   const [topLocation, setTopLocation] = useState();
-  const {showSelectionBox, selectionStyle, dispatch} = useSelectBox();
+  const {selectionStyle, dispatchShowSelection} = useSelectBox();
+
 
   const {top, left, bottom, right} = selectionStyle;
 
   const handleClick = () => {
-
-    dispatch({type: 'HIDE'})
+    dispatchShowSelection({type: 'HIDE'})
   }
+
 
   
   useEffect(() => {

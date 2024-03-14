@@ -6,6 +6,7 @@ import SelectionBox from '../components/SelectionBox';
 import { useSelectBox } from '../hooks/useSelectBox';
 import { TimerProvider } from '../context/timerContext';
 import { CharacterIconProvider } from '../context/CharacterIconContext';
+import ScoreModal from '../components/ScoreModal';
 
 const GamePage = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ const GamePage = styled.div`
 
 
 export const Game = () => {
-  const {showSelectionBox, dispatch} = useSelectBox()
+  const {showSelectionBox, dispatchShowSelection} = useSelectBox();
 
   const [xAxis, setXAxis] = useState(null);
   const [yAxis, setYAxis] = useState(null);
@@ -42,7 +43,7 @@ export const Game = () => {
 
 
     const position = {left: e.clientX + 5, top: e.clientY, bottom: imgInfo.bottom, right: imgInfo.right}
-    dispatch({type: 'DISPLAY', payload: position})
+    dispatchShowSelection({type: 'DISPLAY', payload: position});
 
   }
 
@@ -51,27 +52,27 @@ export const Game = () => {
   return (
     <>
     <CharacterIconProvider>
-
-    
-    <TimerProvider>
+      <TimerProvider>
         <Timerbar />
-    </TimerProvider>
-    
-    <GamePage >
-        <img
-          src={bg}
-          alt='Game board'
-          className="img-fluid"
-          onClick={mouseClick}
-        />
 
-        {
-          showSelectionBox &&
-          <SelectionBox />
-        }
-        
-    </GamePage>
+        <GamePage >
+            <img
+              src={bg}
+              alt='Game board'
+              className="img-fluid"
+              onClick={mouseClick}
+            />
+
+            {
+              showSelectionBox &&
+              <SelectionBox />
+            }
+            
+        </GamePage>
+      </TimerProvider>
     </CharacterIconProvider>
+
+    <ScoreModal />
     </>
   )
 }

@@ -1,40 +1,60 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
+import Modal from 'react-bootstrap/Modal'; 
+import Button from 'react-bootstrap/Button'; 
 
-const ModalTop = styled.div`
-
+const Scoremodal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 `
 
-const ModalBottom = styled.div`
-
+const ModalBox = styled.div`
+  height: fit-content;
+  width: 400px;
+  padding: 20;
+  background-color: rgb(52, 58, 64);
 `
 
 const ScoreModal = () => {
+  const [show, setShow] = useState(true);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
-    <>
-    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-      Launch static backdrop modal
-    </button>
-
-
-    <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div className="modal-dialog">
-        <div className="modal-content text-white bg-dark" data-bs-theme="dark">
-          <ModalTop>
-            <h1 className="modal-title fs-5" id="staticBackdropLabel">Congrats, you did it!</h1>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </ModalTop>
-          <div className="modal-body">
-            ...
-          </div>
-          <ModalBottom>
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Understood</button>
-          </ModalBottom>
-        </div>
-      </div>
-    </div>
-    </>
+    <Scoremodal>
+      <ModalBox>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          centered
+          data-bs-theme="dark"
+          className='text-light'
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            I will not close if you click outside me. Do not even try to press
+            escape key.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary">Understood</Button>
+          </Modal.Footer>
+        </Modal>
+      </ModalBox>
+    </Scoremodal> 
   )
 }
 
