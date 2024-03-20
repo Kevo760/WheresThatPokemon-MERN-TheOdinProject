@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import Modal from 'react-bootstrap/Modal'; 
-import Button from 'react-bootstrap/Button'; 
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
+import { useTimer } from '../hooks/useTimer';
 
 const Scoremodal = styled.div`
   position: fixed;
@@ -14,7 +17,7 @@ const Scoremodal = styled.div`
   z-index: 1;
 `
 
-const ModalBox = styled.div`
+const ModalForm = styled.form`
   height: fit-content;
   width: 400px;
   padding: 20;
@@ -22,14 +25,20 @@ const ModalBox = styled.div`
 `
 
 const ScoreModal = () => {
+  const { dispatchTimer } = useTimer()
+
   const [show, setShow] = useState(true);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    // dispatchTimer({type: 'STOP'})
+  })
+
   return (
     <Scoremodal>
-      <ModalBox>
+      <ModalForm>
         <Modal
           show={show}
           onHide={handleClose}
@@ -37,23 +46,40 @@ const ScoreModal = () => {
           keyboard={false}
           centered
           data-bs-theme="dark"
-          className='text-light'
+          className='text-light test'
         >
           <Modal.Header closeButton>
-            <Modal.Title>Modal title</Modal.Title>
+            <Modal.Title>Congratulation!</Modal.Title>
           </Modal.Header>
+
           <Modal.Body>
-            I will not close if you click outside me. Do not even try to press
-            escape key.
+            <b>You score is: </b>
           </Modal.Body>
+
+          <Modal.Body>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+              <Form.Control
+                placeholder="Add your name"
+                aria-label="name"
+                aria-describedby="basic-addon1"
+                id='name'
+              />
+            </InputGroup>
+
+          </Modal.Body>
+
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
+
             <Button variant="primary">Understood</Button>
           </Modal.Footer>
+
         </Modal>
-      </ModalBox>
+      </ModalForm>
     </Scoremodal> 
   )
 }

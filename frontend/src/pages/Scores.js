@@ -56,6 +56,7 @@ const ScorePage = styled.div`
 
   const ScoreBar = styled(InfoBar)`
     background-color: rgba(108, 117, 125);
+    margin-bottom: 10px;
   `
 
 
@@ -79,7 +80,16 @@ export const Scores = () => {
           <div className='username'>Username username username username username</div>
         </div>
         
-        <div className='timescore'>123123123 seconds</div>
+        <div className='timescore'>123123123</div>
+      </ScoreBar>
+
+      <ScoreBar>
+        <div className='score-left-section'>
+          <div className='placing'>1st</div>
+          <div className='username'>Username username username username username</div>
+        </div>
+        
+        <div className='timescore'>123123123</div>
       </ScoreBar>
 
 

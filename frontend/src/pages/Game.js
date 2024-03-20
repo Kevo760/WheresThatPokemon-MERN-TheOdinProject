@@ -55,6 +55,8 @@ export const Game = () => {
       <TimerProvider>
         <Timerbar />
 
+        {/* <ScoreModal /> */}
+
         <GamePage >
             <img
               src={bg}
@@ -67,12 +69,9 @@ export const Game = () => {
               showSelectionBox &&
               <SelectionBox />
             }
-            
         </GamePage>
       </TimerProvider>
     </CharacterIconProvider>
-
-    <ScoreModal />
     </>
   )
 }
