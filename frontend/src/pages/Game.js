@@ -41,6 +41,8 @@ export const Game = () => {
     setXAxis(Math.round((offsetX / imgInfo.width) * 100));
     setYAxis(Math.round((offsetY / imgInfo.height) * 100));
 
+    console.log('X:', Math.round((offsetX / imgInfo.width) * 100), 'Y:', Math.round((offsetY / imgInfo.height) * 100));
+
 
     const position = {left: e.clientX + 5, top: e.clientY, bottom: imgInfo.bottom, right: imgInfo.right}
     dispatchShowSelection({type: 'DISPLAY', payload: position});

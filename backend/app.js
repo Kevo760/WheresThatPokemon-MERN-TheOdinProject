@@ -8,6 +8,7 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 const scoreRouter = require('./routes/scoreRoute');
+const locationRouter = require('./routes/locationRoute');
 
 var app = express();
 const PORT = process.env.PORT || 4000;
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/scores', scoreRouter);
+app.use('/locations', locationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
