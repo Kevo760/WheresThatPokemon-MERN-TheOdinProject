@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import { Game } from './pages/Game';
 import { Scores } from './pages/Scores';
 import { SelectBoxProvider } from './context/SelectBoxContext';
+import { MsgSelectProvider } from './context/MsgSelectContext';
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
               path='/game'
               element={
                 <SelectBoxProvider>
-                  <Game />
+                  <MsgSelectProvider>
+                    <Game />
+                  </MsgSelectProvider>
                 </SelectBoxProvider>
               } 
             />

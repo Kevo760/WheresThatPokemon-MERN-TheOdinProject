@@ -1,5 +1,5 @@
-import { useContext } from "react"
-import { SelectBoxContext } from "../context/SelectBoxContext"
+import { useContext } from "react";
+import { SelectBoxContext } from "../context/SelectBoxContext";
 
 
 export const useSelectBox = () => {

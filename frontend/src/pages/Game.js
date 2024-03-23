@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import bg from '../images/bg.png'
 import Timerbar from '../components/Timerbar';
@@ -7,6 +7,11 @@ import { useSelectBox } from '../hooks/useSelectBox';
 import { TimerProvider } from '../context/timerContext';
 import { CharacterIconProvider } from '../context/CharacterIconContext';
 import ScoreModal from '../components/ScoreModal';
+import Spinner from 'react-bootstrap/Spinner';
+import MsgSelectBar from '../components/MsgSelectBar';
+import { MsgSelectProvider } from '../context/MsgSelectContext';
+import { useMsgSelect } from '../hooks/useMsgSelect';
+
 
 const GamePage = styled.div`
   display: flex;
@@ -24,12 +29,24 @@ const GamePage = styled.div`
   }
 `
 
+const LoadingBox = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`
+
 
 export const Game = () => {
   const {showSelectionBox, dispatchShowSelection} = useSelectBox();
+  const { showMsg, found } = useMsgSelect()
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [showScoreModal, setShowScoreModal] = useState(false);
   const [xAxis, setXAxis] = useState(null);
   const [yAxis, setYAxis] = useState(null);
+
 
 
   const mouseClick = (e)=> {
@@ -41,39 +58,68 @@ export const Game = () => {
     setXAxis(Math.round((offsetX / imgInfo.width) * 100));
     setYAxis(Math.round((offsetY / imgInfo.height) * 100));
 
-    console.log('X:', Math.round((offsetX / imgInfo.width) * 100), 'Y:', Math.round((offsetY / imgInfo.height) * 100));
-
-
+  
     const position = {left: e.clientX + 5, top: e.clientY, bottom: imgInfo.bottom, right: imgInfo.right}
     dispatchShowSelection({type: 'DISPLAY', payload: position});
 
   }
 
+  useEffect(() => {
+    
+    const fetchScoreData = async() => {
+      const res =  await fetch('/scores');
+      const json = await res.json();
+
+      if(!res.ok) {
+
+      } else {
+
+        setIsLoading(false)
+      }
+    }
+
+    fetchScoreData()
+  }, [])
 
 
   return (
     <>
-    <CharacterIconProvider>
-      <TimerProvider>
-        <Timerbar />
-
-        {/* <ScoreModal /> */}
-
-        <GamePage >
-            <img
-              src={bg}
-              alt='Game board'
-              className="img-fluid"
-              onClick={mouseClick}
-            />
-
+      <CharacterIconProvider>
+        <TimerProvider>
             {
-              showSelectionBox &&
-              <SelectionBox />
+              isLoading ?
+              <LoadingBox>
+                <Spinner animation="border" variant="warning" />
+              </LoadingBox>
+              :
+              <>
+                
+                <Timerbar />
+
+                {
+                  showScoreModal && <ScoreModal />
+                }
+
+                <GamePage >
+                  <img
+                    src={bg}
+                    alt='Game board'
+                    className="img-fluid"
+                    onClick={mouseClick}
+                  />
+
+                  {
+                    showSelectionBox &&
+                    <SelectionBox />
+                  }
+
+                  { showMsg &&  <MsgSelectBar status={found} />}
+                  </GamePage>
+
+              </>
             }
-        </GamePage>
-      </TimerProvider>
-    </CharacterIconProvider>
+        </TimerProvider>
+      </CharacterIconProvider>
     </>
   )
 }
