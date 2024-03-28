@@ -5,7 +5,7 @@ export const useCharacterIcon = () => {
     const context = useContext(CharacterIconContext)
 
     if(!context) {
-        throw Error('useCharaterIcon must be used on CharacterIconProvider')
+        throw Error('useCharacterIcon must be used on CharacterIconProvider')
     }
 
     return context

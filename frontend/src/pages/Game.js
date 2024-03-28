@@ -4,7 +4,7 @@ import bg from '../images/bg.png'
 import Timerbar from '../components/Timerbar';
 import SelectionBox from '../components/SelectionBox';
 import { useSelectBox } from '../hooks/useSelectBox';
-import { TimerProvider } from '../context/timerContext';
+import { TimerProvider } from '../context/TimerContext';
 import { CharacterIconProvider } from '../context/CharacterIconContext';
 import ScoreModal from '../components/ScoreModal';
 import Spinner from 'react-bootstrap/Spinner';

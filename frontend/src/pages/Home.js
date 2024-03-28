@@ -56,7 +56,7 @@ const HomePage = styled.form`
 
 export const Home = () => {
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit= (e) => {
     e.preventDefault();
@@ -64,7 +64,7 @@ export const Home = () => {
   }
 
   return (
-    <HomePage onClick={handleSubmit}>
+    <HomePage>
       <div className='home-textbox'>
         <h1>Welcome Player!</h1>
         <p>Find how fast you can find the pokemon below.</p>
@@ -87,7 +87,7 @@ export const Home = () => {
 
       </div>
       
-      <button>Start Game</button>
+      <button onClick={e => handleSubmit(e)}>Start Game</button>
     </HomePage>
   )
 }

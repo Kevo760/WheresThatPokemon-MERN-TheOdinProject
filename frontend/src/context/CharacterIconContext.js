@@ -33,7 +33,7 @@ export const CharacterIconProvider = ({children}) => {
     })
 
     return (
-        <CharacterIconContext.Provider value={{state, dispatchCharacterIcon}}>
+        <CharacterIconContext.Provider value={{...state, dispatchCharacterIcon}}>
             {
                 children
             }
