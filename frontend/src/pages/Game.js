@@ -42,7 +42,7 @@ export const Game = () => {
   const {showSelectionBox, dispatchShowSelection} = useSelectBox();
   const { showMsg, found } = useMsgSelect()
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [xAxis, setXAxis] = useState(null);
   const [yAxis, setYAxis] = useState(null);
@@ -63,24 +63,6 @@ export const Game = () => {
     dispatchShowSelection({type: 'DISPLAY', payload: position});
 
   }
-
-  useEffect(() => {
-    
-    const fetchScoreData = async() => {
-      const res =  await fetch('/scores');
-      const json = await res.json();
-
-      if(!res.ok) {
-
-      } else {
-
-        setIsLoading(false)
-      }
-    }
-
-    fetchScoreData()
-  }, [])
-
 
   return (
     <>

@@ -6,6 +6,7 @@ import { Game } from './pages/Game';
 import { Scores } from './pages/Scores';
 import { SelectBoxProvider } from './context/SelectBoxContext';
 import { MsgSelectProvider } from './context/MsgSelectContext';
+import { ScoreDataProvider } from './context/ScoreDataContext';
 
 function App() {
   return (
@@ -17,7 +18,11 @@ function App() {
 
             <Route
               path='/'
-              element={<Home />} 
+              element={
+              <ScoreDataProvider>
+                <Home />
+              </ScoreDataProvider>
+            } 
             />
 
             <Route

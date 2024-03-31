@@ -1,41 +1,74 @@
 import { createContext, useEffect, useReducer } from "react";
-import { useCharacData } from "../hooks/useCharacData";
 
-const ScoreDataContext = createContext();
+export const ScoreDataContext = createContext();
 
-const ScoreDataReducer = () => {
+export const ScoreDataReducer = (state, action) => {
     switch(action.type) {
+        case 'GET_SCORE':
+           return {
+                getScore: true,
+                scoreID: null,
+                error: false
+            }
         case 'SET_DATA':
             return {
+                getScore: false,
                 scoreID: action.payload,
                 error: false
             }
         case 'SET_ERROR':
             return {
+                getScore: false,
                 scoreID: null,
                 error: action.payload
             }
-        default: state
+        default: 
+            return state
     }
 }
 
 
-const ScoreDataProvider = ({children}) => {
+export const ScoreDataProvider = ({children}) => {
     const [state, dispatchScoreData] = useReducer(ScoreDataReducer, {
+        getScore: false,
         scoreID: null,
         error: false
     })
 
-    const { dispatchCharacData } = useCharacData();
-
-
     useEffect(() => {
 
-    })
+        const fetchScore = async() => {
+
+            try {
+                const res = await fetch('/scores', {
+                    method: 'POST'
+                });
+
+                const json = await res.json();
+
+                if(!res.ok) {
+                    dispatchScoreData({type: 'SET_ERROR', payload: 'Something went wrong, try again.'})
+                }
+
+                if(res.ok) {
+                    dispatchScoreData({type: 'SET_DATA', payload: json.__id})
+                }
+
+            } catch(err) {
+
+                dispatchScoreData({type: 'SET_ERROR', payload: err})
+            }
+        }
+
+        if(state.getScore === true) {
+            fetchScore()
+        }
+        
+    }, [state])
 
 
     return (
-        <ScoreDataContext.Provider>
+        <ScoreDataContext.Provider value={{...state, dispatchScoreData}}>
             {
                 children
             }
