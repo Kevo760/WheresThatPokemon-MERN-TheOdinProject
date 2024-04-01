@@ -3,7 +3,7 @@ import { ScoreDataContext } from "../context/ScoreDataContext";
 
 
 
-export const useSelectBox = () => {
+export const useScoreData= () => {
     const context = useContext(ScoreDataContext);
 
     if(!context) {

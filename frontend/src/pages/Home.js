@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import { useScoreData } from '../hooks/useScoreData';
+import { useCharacData } from '../hooks/useCharacData';
 
-const HomePage = styled.form`
+const HomePage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
   max-width: 480px;
-  height: 350px;
+  height: fit-content;
   color: white;
   background-color: rgb(52, 58, 64);
   border-radius: 6px;
@@ -40,7 +44,6 @@ const HomePage = styled.form`
     padding: 10px;
     border: none;
     border-radius: 6px;
-    background-color: rgb(20, 33, 61);
     color: white;
     font-weight: bold;
     box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
@@ -48,8 +51,11 @@ const HomePage = styled.form`
   button:hover {
     background-color: rgb(58, 95, 176);
   }
-  button:active {
-    background-color: rgb(20, 33, 61);
+  .error-box {
+    text-align: center;
+    height: fit-content;
+    width: 100%;
+    color: tomato;
   }
 `
 
@@ -57,11 +63,54 @@ const HomePage = styled.form`
 export const Home = () => {
 
   const navigate = useNavigate();
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [err, setErr] = useState(null);
+  const { scoreID, scoreError, dispatchScoreData } = useScoreData();
+  const { charError, spearow, darumaka, galvantula, dispatchCharacData } = useCharacData();
 
-  const handleSubmit= (e) => {
-    e.preventDefault();
-    navigate('/game')
+  
+  const handleSubmit = () => {
+
+    setIsLoading(true);
+
+    if(!scoreID) {
+      dispatchScoreData({ type: 'GET_SCORE' });
+      dispatchCharacData({type: 'GET_DATA'});
+    } 
+
   }
+
+  useEffect(() => {
+
+    const checkData = () => {
+
+      if(scoreError && charError) {
+
+        setErr(scoreError + ',' + charError);
+        dispatchScoreData({ type: 'DELETE_DATA' });
+        dispatchCharacData({type: 'DELETE_DATA'});
+        setIsLoading(false);
+      } else if(scoreError) {
+
+        setErr(scoreError);
+        dispatchScoreData({ type: 'DELETE_DATA' });
+        setIsLoading(false);
+      } else if(charError) {
+
+        setErr(charError);
+        dispatchCharacData({type: 'DELETE_DATA'});
+        setIsLoading(false);
+      }
+
+
+      if(scoreID && spearow && darumaka && galvantula) {
+        navigate('/game');
+      }
+    }
+    
+    checkData()
+
+  }, [scoreID, spearow, darumaka, galvantula, charError, scoreError])
 
   return (
     <HomePage>
@@ -87,7 +136,32 @@ export const Home = () => {
 
       </div>
       
-      <button onClick={e => handleSubmit(e)}>Start Game</button>
+      {
+        isLoading ?
+          <Button variant="primary" disabled>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span className="visually-hidden">Loading...</span>
+        </Button>
+        :
+        <Button variant="primary" onClick={e => handleSubmit()}>
+            Start Game
+        </Button>
+      }
+
+      {
+        err 
+        && 
+        <div className='error-box'>
+          <span>{err}</span>
+        </div>
+      }
+      
     </HomePage>
   )
 }

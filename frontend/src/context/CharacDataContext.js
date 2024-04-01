@@ -10,15 +10,15 @@ export const CharacDataReducer = (state, action) => {
                 darumaka: null,
                 galvantula: null,
                 getData: true,
-                error: false
+                charError: false
             }
         case 'SET_ERROR': 
             return {
                 spearow: null,
                 darumaka: null,
                 galvantula: null,
-                getData: true,
-                error: action.payload
+                getData: false,
+                charError: action.payload
             }
         case 'SET_DATA': 
             return {
@@ -26,7 +26,7 @@ export const CharacDataReducer = (state, action) => {
                 darumaka: action.payload.darumaka,
                 galvantula: action.payload.galvantula,
                 getData: false,
-                error: false
+                charError: false
             }
         case 'DELETE_DATA':
             return {
@@ -34,7 +34,7 @@ export const CharacDataReducer = (state, action) => {
                 darumaka: null,
                 galvantula: null,
                 getData: false,
-                error: false
+                charError: false
             }
         default:
             return state
@@ -46,8 +46,8 @@ export const CharacDataProvider = ({children}) => {
         spearow: null,
         darumaka: null,
         galvantula: null,
-        getData: true,
-        error: false
+        getData: false,
+        charError: false
     });
 
     useEffect(() => {
@@ -56,8 +56,8 @@ export const CharacDataProvider = ({children}) => {
             try {
 
                 const res = await fetch('/locations/', {
-                        method: 'GET'
-                    });
+                    method: 'GET'
+                });
 
                 const json = await res.json();
 
@@ -76,7 +76,7 @@ export const CharacDataProvider = ({children}) => {
 
             } catch(err) {
                 
-                dispatchCharacData({type: 'SET_ERROR', payload: err})
+                dispatchCharacData({type: 'SET_ERROR', payload: 'Something went wrong, try again.'})
             }
         }
 

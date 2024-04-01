@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelectBox } from '../hooks/useSelectBox';
+import { useCharacSelect } from '../hooks/useCharacSelect';
+import { useCharacData } from '../hooks/useCharacData';
+import { useMsgSelect } from '../hooks/useMsgSelect';
 
 const Selectionbox = styled.div`
   left: ${props => props.$setleft + "px"};
@@ -45,17 +48,74 @@ const SelectionBox = () => {
   const [leftLocation, setLeftLocation] = useState();
   const [topLocation, setTopLocation] = useState();
   const {selectionStyle, dispatchShowSelection} = useSelectBox();
+  const { x, y } = useCharacSelect();
+  const { spearow, darumaka, galvantula } = useCharacData();
+  const { dispatchMsgSelect } = useMsgSelect();
 
 
-  const {top, left, bottom, right} = selectionStyle;
+  const { top, left, bottom, right } = selectionStyle;
 
-  const handleClick = () => {
+  // Checks cordinates by passing character object
+  const checkCord = (characObject) => {
+    
+    const xArray = characObject.xAxis;
+    const yArray = characObject.yAxis;
+
+    // Itirates through array to find a match
+    const checkX = () => {
+      for(let i = 0; i < xArray.length; i++) {
+        if(xArray[i] === x) {
+            
+          return true
+        } 
+      }
+      return false
+    }
+
+    // Itirates through array to find a match
+    const checkY = () => {
+      for(let j = 0; j < yArray.length; j++) {
+        if(yArray[j] === y ) {
+
+          return true
+        }
+      }
+      return false
+    }
+
+    let foundX = checkX();
+    let foundY = checkY();
+
+    
+
+    if(foundX && foundY) {
+      console.log('match')
+    } else {
+      console.log('false')
+    }
+  }
+
+  const handleClick = (character) => {
+
+    if(character === 'spearow') {
+
+      checkCord(spearow)
+    } else if(character === 'darumaka') {
+
+      checkCord(darumaka)
+    } else if(character === 'galvantula') {
+
+      checkCord(galvantula)
+    }
+
+
     dispatchShowSelection({type: 'HIDE'})
   }
 
 
   
   useEffect(() => {
+    
     const checkOffBorders = () => {
       // Find image limit to where select box does not go outside image boundries
       const rightBorderLimit = right - 120;
@@ -81,15 +141,15 @@ const SelectionBox = () => {
 
   return (
     <Selectionbox $settop={topLocation} $setleft={leftLocation}>
-      <div className='selection-bar'onClick={e => handleClick()}>
+      <div className='selection-bar'onClick={e => handleClick('galvantula')}>
         <span>Galvantula</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/galvantula.png" alt="Galvantula" />
       </div>
-      <div className='selection-bar' onClick={e => handleClick()}>
+      <div className='selection-bar' onClick={e => handleClick('darumaka')}>
         <span>Darumaka</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/darumaka.png" alt="Darumaka" />
       </div>
-      <div className='selection-bar' onClick={e => handleClick()}>
+      <div className='selection-bar' onClick={e => handleClick('spearow')}>
         <span>Spearow</span>
         <img src="https://img.pokemondb.net/sprites/black-white/normal/spearow.png" alt="Spearow" />
       </div>

@@ -8,19 +8,25 @@ export const ScoreDataReducer = (state, action) => {
            return {
                 getScore: true,
                 scoreID: null,
-                error: false
+                scoreError: false
             }
         case 'SET_DATA':
             return {
                 getScore: false,
                 scoreID: action.payload,
-                error: false
+                scoreError: false
             }
         case 'SET_ERROR':
             return {
                 getScore: false,
                 scoreID: null,
-                error: action.payload
+                scoreError: action.payload
+            }
+        case 'DELETE_DATA': 
+            return {
+                getScore: false,
+                scoreID: null,
+                scoreError: false
             }
         default: 
             return state
@@ -32,7 +38,7 @@ export const ScoreDataProvider = ({children}) => {
     const [state, dispatchScoreData] = useReducer(ScoreDataReducer, {
         getScore: false,
         scoreID: null,
-        error: false
+        scoreError: false
     })
 
     useEffect(() => {
@@ -51,12 +57,12 @@ export const ScoreDataProvider = ({children}) => {
                 }
 
                 if(res.ok) {
-                    dispatchScoreData({type: 'SET_DATA', payload: json.__id})
+                    dispatchScoreData({type: 'SET_DATA', payload: json._id})
                 }
 
             } catch(err) {
 
-                dispatchScoreData({type: 'SET_ERROR', payload: err})
+                dispatchScoreData({type: 'SET_ERROR', payload: 'Something went wrong, try again.'})
             }
         }
 

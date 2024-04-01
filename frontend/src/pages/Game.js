@@ -11,6 +11,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import MsgSelectBar from '../components/MsgSelectBar';
 import { MsgSelectProvider } from '../context/MsgSelectContext';
 import { useMsgSelect } from '../hooks/useMsgSelect';
+import { useNavigate } from 'react-router-dom';
+import { useScoreData } from '../hooks/useScoreData';
+import { useCharacData } from '../hooks/useCharacData';
+import { useCharacSelect } from '../hooks/useCharacSelect';
 
 
 const GamePage = styled.div`
@@ -40,12 +44,14 @@ const LoadingBox = styled.div`
 
 export const Game = () => {
   const {showSelectionBox, dispatchShowSelection} = useSelectBox();
-  const { showMsg, found } = useMsgSelect()
+  const { showMsg, found } = useMsgSelect();
+  const { scoreID } = useScoreData();
+  const { spearow, darumaka, galvantula } = useCharacData();
+  const navigate = useNavigate();
+  const { dispatchCharacSelect } = useCharacSelect();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
-  const [xAxis, setXAxis] = useState(null);
-  const [yAxis, setYAxis] = useState(null);
+
 
 
 
@@ -55,27 +61,36 @@ export const Game = () => {
     const { offsetX, offsetY } = e.nativeEvent;
 
     // Accurate position regardless of window size
-    setXAxis(Math.round((offsetX / imgInfo.width) * 100));
-    setYAxis(Math.round((offsetY / imgInfo.height) * 100));
+    let x = Math.round((offsetX / imgInfo.width) * 100);
+    let y = Math.round((offsetY / imgInfo.height) * 100);
 
   
     const position = {left: e.clientX + 5, top: e.clientY, bottom: imgInfo.bottom, right: imgInfo.right}
     dispatchShowSelection({type: 'DISPLAY', payload: position});
+    dispatchCharacSelect({type: 'SET_CORD', payload: {x, y}})
 
   }
+
+  useEffect(() => {
+
+    const checkData = () => {
+
+      // Checks if all data is loaded if not return to main menu
+      if(!scoreID || !spearow || !darumaka || !galvantula) {
+
+        navigate('/')
+      }
+    }
+
+    checkData()
+    
+  },[scoreID, spearow, darumaka, galvantula])
 
   return (
     <>
       <CharacterIconProvider>
         <TimerProvider>
-            {
-              isLoading ?
-              <LoadingBox>
-                <Spinner animation="border" variant="warning" />
-              </LoadingBox>
-              :
               <>
-                
                 <Timerbar />
 
                 {
@@ -99,7 +114,6 @@ export const Game = () => {
                   </GamePage>
 
               </>
-            }
         </TimerProvider>
       </CharacterIconProvider>
     </>
