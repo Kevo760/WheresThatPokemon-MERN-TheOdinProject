@@ -4,6 +4,7 @@ import { useSelectBox } from '../hooks/useSelectBox';
 import { useCharacSelect } from '../hooks/useCharacSelect';
 import { useCharacData } from '../hooks/useCharacData';
 import { useMsgSelect } from '../hooks/useMsgSelect';
+import { useCharacterIcon } from '../hooks/useCharacterIcon';
 
 const Selectionbox = styled.div`
   left: ${props => props.$setleft + "px"};
@@ -51,13 +52,15 @@ const SelectionBox = () => {
   const { x, y } = useCharacSelect();
   const { spearow, darumaka, galvantula } = useCharacData();
   const { dispatchMsgSelect } = useMsgSelect();
-
+  const { dispatchCharacterIcon } = useCharacterIcon();
 
   const { top, left, bottom, right } = selectionStyle;
 
   // Checks cordinates by passing character object
   const checkCord = (characObject) => {
-    
+    const name = characObject.name;
+
+    // Grabs the position array
     const xArray = characObject.xAxis;
     const yArray = characObject.yAxis;
 
@@ -83,17 +86,22 @@ const SelectionBox = () => {
       return false
     }
 
+    // passes the check if true or false
     let foundX = checkX();
     let foundY = checkY();
 
     
-
+    // If x and y are true return characterIcon true and show found message
     if(foundX && foundY) {
-      console.log('match')
+
+      dispatchCharacterIcon({type: name});
+      dispatchMsgSelect({type: 'SHOW_FOUND'});
     } else {
-      console.log('false')
+
+      dispatchMsgSelect({type: 'SHOW_NOT_FOUND'});
     }
   }
+
 
   const handleClick = (character) => {
 
@@ -108,7 +116,7 @@ const SelectionBox = () => {
       checkCord(galvantula)
     }
 
-
+    
     dispatchShowSelection({type: 'HIDE'})
   }
 

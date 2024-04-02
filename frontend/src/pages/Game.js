@@ -5,9 +5,7 @@ import Timerbar from '../components/Timerbar';
 import SelectionBox from '../components/SelectionBox';
 import { useSelectBox } from '../hooks/useSelectBox';
 import { TimerProvider } from '../context/TimerContext';
-import { CharacterIconProvider } from '../context/CharacterIconContext';
 import ScoreModal from '../components/ScoreModal';
-import Spinner from 'react-bootstrap/Spinner';
 import MsgSelectBar from '../components/MsgSelectBar';
 import { MsgSelectProvider } from '../context/MsgSelectContext';
 import { useMsgSelect } from '../hooks/useMsgSelect';
@@ -15,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { useScoreData } from '../hooks/useScoreData';
 import { useCharacData } from '../hooks/useCharacData';
 import { useCharacSelect } from '../hooks/useCharacSelect';
+import { useCharacterIcon } from '../hooks/useCharacterIcon';
+
 
 
 const GamePage = styled.div`
@@ -33,22 +33,15 @@ const GamePage = styled.div`
   }
 `
 
-const LoadingBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-`
-
-
 export const Game = () => {
   const {showSelectionBox, dispatchShowSelection} = useSelectBox();
   const { showMsg, found } = useMsgSelect();
   const { scoreID } = useScoreData();
   const { spearow, darumaka, galvantula } = useCharacData();
-  const navigate = useNavigate();
   const { dispatchCharacSelect } = useCharacSelect();
+  const { spearowFound, darumakaFound, galvantulaFound } = useCharacterIcon();
+
+  const navigate = useNavigate();
 
   const [showScoreModal, setShowScoreModal] = useState(false);
 
@@ -73,6 +66,12 @@ export const Game = () => {
 
   useEffect(() => {
 
+    const checkAllFound = () => {
+      if(spearowFound && darumakaFound && galvantulaFound) {
+        console.log('you won')
+      }
+    }
+
     const checkData = () => {
 
       // Checks if all data is loaded if not return to main menu
@@ -81,14 +80,14 @@ export const Game = () => {
         navigate('/')
       }
     }
-
-    checkData()
     
-  },[scoreID, spearow, darumaka, galvantula])
+    checkData()
+    checkAllFound()
+
+  },[scoreID, spearow, darumaka, galvantula, spearowFound, darumakaFound, galvantulaFound])
 
   return (
     <>
-      <CharacterIconProvider>
         <TimerProvider>
               <>
                 <Timerbar />
@@ -115,7 +114,6 @@ export const Game = () => {
 
               </>
         </TimerProvider>
-      </CharacterIconProvider>
     </>
   )
 }

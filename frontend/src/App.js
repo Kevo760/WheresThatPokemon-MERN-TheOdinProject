@@ -7,6 +7,7 @@ import { Scores } from './pages/Scores';
 import { SelectBoxProvider } from './context/SelectBoxContext';
 import { MsgSelectProvider } from './context/MsgSelectContext';
 import { CharacSelectProvider } from './context/CharacSelectContext';
+import { CharacterIconProvider } from './context/CharacterIconContext';
 
 
 function App() {
@@ -25,13 +26,16 @@ function App() {
             <Route
               path='/game'
               element={
-                <SelectBoxProvider>
-                  <CharacSelectProvider>
-                    <MsgSelectProvider>
-                      <Game />
-                    </MsgSelectProvider>
-                  </CharacSelectProvider>
-                </SelectBoxProvider>
+                <CharacterIconProvider>
+                  <SelectBoxProvider>
+                    <CharacSelectProvider>
+                      <MsgSelectProvider>
+                        <Game />
+                      </MsgSelectProvider>
+                    </CharacSelectProvider>
+                  </SelectBoxProvider>
+                </CharacterIconProvider>
+
               } 
             />
 

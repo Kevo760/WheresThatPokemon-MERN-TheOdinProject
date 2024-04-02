@@ -5,12 +5,12 @@ export const MsgSelectContext = createContext();
 
 export const MsgSelectReducer = (state, action) => {
     switch(action.type) {
-        case 'SHOWFOUND':
+        case 'SHOW_FOUND':
             return {
                 showMsg: true,
                 found: true
             }
-        case 'SHOWNOTFOUND':
+        case 'SHOW_NOT_FOUND':
             return {
                 showMsg: true,
                 found: false

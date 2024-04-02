@@ -1,23 +1,23 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const CharacterIconContext = createContext();
 
 export const CharIconReducer = (state, action) => {
     switch(action.type) {
-        case 'SPEAROW':
+        case 'spearow':
             return {
                 ...state,
-                spearow: true
+                spearowFound: true
             }
-        case 'DARUMAKA':
+        case 'darumaka':
             return {
                 ...state,
-                darumak: true
+                darumakaFound: true
             }
-        case 'GALVANTULA':
+        case 'galvantula':
             return {
                 ...state,
-                galvantula: true
+                galvantulaFound: true
             }
         default: 
             return state
@@ -27,9 +27,13 @@ export const CharIconReducer = (state, action) => {
 
 export const CharacterIconProvider = ({children}) => {
     const [state, dispatchCharacterIcon] = useReducer(CharIconReducer, {
-        spearow: false,
-        darumak: false,
-        galvantula: false
+        spearowFound: false,
+        darumakaFound: false,
+        galvantulaFound: false,
+    })
+
+    useState(() => {
+
     })
 
     return (
