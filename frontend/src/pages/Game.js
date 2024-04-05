@@ -7,7 +7,6 @@ import { useSelectBox } from '../hooks/useSelectBox';
 import { TimerProvider } from '../context/TimerContext';
 import ScoreModal from '../components/ScoreModal';
 import MsgSelectBar from '../components/MsgSelectBar';
-import { MsgSelectProvider } from '../context/MsgSelectContext';
 import { useMsgSelect } from '../hooks/useMsgSelect';
 import { useNavigate } from 'react-router-dom';
 import { useScoreData } from '../hooks/useScoreData';
@@ -68,7 +67,8 @@ export const Game = () => {
 
     const checkAllFound = () => {
       if(spearowFound && darumakaFound && galvantulaFound) {
-        console.log('you won')
+       
+        setShowScoreModal(true)
       }
     }
 

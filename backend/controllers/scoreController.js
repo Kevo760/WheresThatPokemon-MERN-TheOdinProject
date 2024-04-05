@@ -31,43 +31,56 @@ exports.create_score = asyncHandler(async(req, res, next) => {
 });
 
 // Update score
-exports.update_score = [
-    body('username')
-    .trim()
-    .isLength({ min: 3, max: 10})
-    .withMessage('Title must have 3 to 10 characters')
-    .escape()
-    ,
+exports.update_score = 
     asyncHandler(async(req, res, next) => {
-    const errors = validationResult(req);
-    const { id, username } = req.body;
+    const { id } = req.params;
+    const { username } = req.body;
+
     const currentDate = Date.now();
 
-    if(!errors.isEmpty()) {
-        res.status(400).json({ error: errors.errors})
-    } 
+    try {
 
-    const findScore = await Score.findById(id)
+        const findScore = await Score.findById(id)
 
-    if(!findScore || !findScore.timeStart) {
-        res.status(400).json({ error: 'Something went wrong, reload the page again.'})
-    } else {
-        const timestart = findScore.timeStart;
-        const timeDifference = currentDate - timestart;
-
-        const updateScore = await Score.findByIdAndUpdate(
-            {_id: id},
-            { $set:
-                {
-                    username,
-                    timeEnd: currentDate,
-                    timeScore: timeDifference
-                }
-
+        if(!findScore || !findScore.timeStart) {
+            res.status(400).json({ error: 'Something went wrong, reload the page again.'})
             }
-        );
+    
+        // If there is no timeEnd add timeEnd
+        if(!findScore.timeEnd) {
+            const timestart = findScore.timeStart;
+            const timeDifference = currentDate - timestart;
+    
+            const updateScore = await Score.findByIdAndUpdate(
+                {_id: id},
+                { $set:
+                    {
+                        timeEnd: currentDate,
+                        timeScore: timeDifference
+                    }
+                },
+                {returnDocument: 'after'}
+            );
 
-        res.status(400).json(updateScore);
+            res.status(200).json(updateScore);
+        
+        // If there is a timeEnd and username update username
+        } else if(findScore.timeEnd && username) {
+            const updateScore = await Score.findByIdAndUpdate(
+                {_id: id},
+                { $set:
+                    {
+                        username,
+                    }
+                },
+                {returnDocument: 'after'}
+            );
+            
+            res.status(200).json(updateScore);
+        }
+
+    } catch(err) {
+        res.status(400).json({ error: 'Something went wrong, reload the page again.'})
     }
-})
-];
+
+});

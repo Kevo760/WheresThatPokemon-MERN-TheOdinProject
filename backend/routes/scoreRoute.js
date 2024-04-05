@@ -16,6 +16,6 @@ router.post('/', scoreControl.create_score);
 // DELETE A SCORE
 
 // UPDATE A SCORE
-router.patch('/', scoreControl.update_score);
+router.patch('/:id', scoreControl.update_score);
 
 module.exports = router
