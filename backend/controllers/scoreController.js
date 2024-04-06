@@ -5,7 +5,12 @@ const { body, validationResult} = require("express-validator");
 
 // Gets all scores
 exports.get_all_scores = asyncHandler(async(req, res, next) => {
-    const getAllScores = await Score.find()
+    const getAllScores = await Score.find({
+        "username": {
+            "$exists": true
+        },
+    }).sort({ 'timeScore': 1}).limit(10);
+
 
     if(!getAllScores || getAllScores.length === 0) {
         res.status(400).json({ error: 'There are no scores.'})
@@ -77,8 +82,7 @@ exports.update_score =
             );
             
             res.status(200).json(updateScore);
-        }
-
+        } else return
     } catch(err) {
         res.status(400).json({ error: 'Something went wrong, reload the page again.'})
     }

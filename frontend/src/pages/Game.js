@@ -68,7 +68,7 @@ export const Game = () => {
     const checkAllFound = () => {
       if(spearowFound && darumakaFound && galvantulaFound) {
        
-        setShowScoreModal(true)
+        setShowScoreModal(true);
       }
     }
 

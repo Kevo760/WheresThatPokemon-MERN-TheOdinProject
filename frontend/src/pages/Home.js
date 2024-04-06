@@ -80,6 +80,7 @@ export const Home = () => {
 
   }
 
+
   useEffect(() => {
 
     const checkData = () => {

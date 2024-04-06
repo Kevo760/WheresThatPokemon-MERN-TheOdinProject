@@ -6,7 +6,7 @@ const ScoreSchema = new Schema({
     username: { type: String, minLength: 3, maxLength: 10},
     timeStart: { type: Date },
     timeEnd: { type: Date },
-    timeScore: { type: String }
+    timeScore: { type: Number }
 });
 
 module.exports = mongoose.model("Score", ScoreSchema);

@@ -7,6 +7,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import { useTimer } from '../hooks/useTimer';
 import { useScoreData } from '../hooks/useScoreData';
+import { useNavigate } from 'react-router-dom';
 
 const Scoremodal = styled.div`
   position: fixed;
@@ -33,6 +34,7 @@ const ErrText = styled.span`
 const ScoreModal = () => {
   const { dispatchTimer } = useTimer();
   const { scoreID } = useScoreData();
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(true);
   const handleClose = () => setShow(false);
@@ -47,7 +49,7 @@ const ScoreModal = () => {
   const [err, setErr] = useState('');
   const [backErr, setBackErr] = useState('')
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     // Regex for no spaces 3 to 10 characters
     const isValid = RegExp(/^\S{3,10}$/);
     setsubmitLoading(true)
@@ -58,9 +60,37 @@ const ScoreModal = () => {
       setsubmitLoading(false)
     } else {
 
-      setErr(null)
-      setsubmitLoading(false)
+      try {
+
+        const response = await fetch(`/scores/${scoreID}`, {
+          method:'PATCH',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username})
+        });
+
+        console.log(response)
+
+        if(!response.ok) {
+
+          throw Error();
+        }
+
+        if(response.ok) {
+
+          navigate('/scores');
+        }
+
+      } catch(err) {
+
+        setErr('Something went wrong, try again later.');
+        setsubmitLoading(false);
+      }
     }
+
+
+
+
+    
   }
 
   useEffect(() => {
@@ -69,9 +99,9 @@ const ScoreModal = () => {
     const setData = async() => {
       setIsLoading(true);
 
-
-      console.log(scoreID)
       try {
+        
+
         const res = await fetch(`/scores/${scoreID}`, {
           method:'PATCH'
         });
@@ -86,7 +116,13 @@ const ScoreModal = () => {
 
         if(res.ok) {
 
-          setFinalScore(json.timeScore);
+          const timeDif = json.timeScore
+
+          let ss = ("0" + Math.floor((timeDif / 1000) % 60)).slice(-2);
+          let mm = ("0" + Math.floor((timeDif / 60000) % 60)).slice(-2);
+          let hh = ("0" + Math.floor((timeDif / 60000 / 60) % 60)).slice(-2);
+
+          setFinalScore(`${hh}:${mm}:${ss}`);
           setIsLoading(false)
         }
 
@@ -132,7 +168,7 @@ const ScoreModal = () => {
               :
               <>
               <Modal.Body className="d-flex justify-content-center align-items-center">
-                <b>You score is: {finalScore}</b>
+                <b>Time Score(hh:mm:ss): {finalScore}</b>
               </Modal.Body>
 
                 <InputGroup className="mb-3">
@@ -142,10 +178,10 @@ const ScoreModal = () => {
                       aria-label="name"
                       aria-describedby="basic-addon1"
                       id='name'
+                      name='name'
                       autoComplete='off'
                       minLength={3}
                       maxLength={10}
-                      pattern='^\S{3,10}$'
                       required={true}
                       onChange={e => setUsername(e.target.value)}
                   />
@@ -175,7 +211,7 @@ const ScoreModal = () => {
               <span className="visually-hidden">Loading...</span>
               </Button>
               :
-              <Button variant="primary" type='button' onClick={handleSubmit}>Submit</Button>
+              <Button variant="primary" type='button' onClick={e => handleSubmit()}>Submit</Button>
             }
             
           </Modal.Footer>

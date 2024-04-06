@@ -46,7 +46,7 @@ export const TimerProvider = ({children}) => {
         let interval = setInterval(() => {
             // Fixes issues where timer stop when tab is inactive
             const left = state.time + (new Date() - startTime)
-            dispatchTimer({type: "TIMER" , payload: left + 10})
+            dispatchTimer({type: "TIMER" , payload: left + .50})
         }, 10);
 
         return () => clearInterval(interval);
