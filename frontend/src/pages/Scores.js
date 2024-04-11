@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Spinner from 'react-bootstrap/Spinner';
+import { converTimeHHMMSS } from '../functions/convertTime';
 
 
 const ScorePage = styled.div`
@@ -21,7 +23,11 @@ const ScorePage = styled.div`
     height: 2px;
     position: relative;
     width: 100%;
-}
+  }
+  .error-text {
+    margin-top: 20px;
+    color: tomato;
+  }
   `
 
   const InfoBar = styled.div`
@@ -50,7 +56,7 @@ const ScorePage = styled.div`
       width: 80%;
     }
     .timescore {
-      width: 20%;
+      width: 25%;
     }
   `
 
@@ -62,36 +68,94 @@ const ScorePage = styled.div`
 
 
 export const Scores = () => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [scores, setScores] = useState();
+
+  const scoreData = 
+  scores ? 
+  scores
+  .sort((a, b) => a.timeScore - b.timeScore)
+  : 
+  null
+
+
+  useEffect(() => {
+
+    const fetchScores = async() => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`/scores`, {
+          method: 'GET'
+        })
+
+        const json = await res.json();
+
+        if(!res.ok) {
+
+          throw Error();
+        }
+
+        if(res.ok) {
+
+          setScores(json);
+          setIsLoading(false);
+          setError(null);
+        }
+
+      } catch(err) {
+        setError('Something went wrong, try again')
+      } 
+    }
+
+    fetchScores()
+
+  }, [])
+
   return (
     <ScorePage>
+
       <h1>Scores</h1>
+
       <InfoBar>
         <div className='score-left-section'>
           <div className='placing'>Placing</div>
           <div className='username'>Username</div>
         </div>
         
-        <div className='timescore'>Time</div>
+        <div className='timescore'>Time(hh:mm:ss)</div>
       </InfoBar>
+
       <hr></hr>
-      <ScoreBar>
-        <div className='score-left-section'>
-          <div className='placing'>1st</div>
-          <div className='username'>Username username username username username</div>
-        </div>
-        
-        <div className='timescore'>123123123</div>
-      </ScoreBar>
 
-      <ScoreBar>
-        <div className='score-left-section'>
-          <div className='placing'>1st</div>
-          <div className='username'>Username username username username username</div>
-        </div>
-        
-        <div className='timescore'>123123123</div>
-      </ScoreBar>
+      {
+        isLoading &&
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      }
 
+      {
+        scores &&
+        scoreData.map((score, index) => {
+          return (
+          <ScoreBar key={index}>
+            <div className='score-left-section'>
+              <div className='placing'>{index + 1}</div>
+              <div className='username'>{score.username}</div>
+            </div>
+            
+            <div className='timescore'>{ converTimeHHMMSS(score.timeScore)}</div>
+          </ScoreBar>
+          )
+        })
+      }
+
+      {
+        error && <span className='error-text'>{error}</span>
+      }
 
     </ScorePage>
   )

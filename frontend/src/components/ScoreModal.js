@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import { useTimer } from '../hooks/useTimer';
 import { useScoreData } from '../hooks/useScoreData';
 import { useNavigate } from 'react-router-dom';
+import { converTimeHHMMSS } from '../functions/convertTime';
 
 const Scoremodal = styled.div`
   position: fixed;
@@ -38,7 +39,7 @@ const ScoreModal = () => {
 
   const [show, setShow] = useState(true);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
   const [username, setUsername] = useState('');
   const [finalScore, setFinalScore] = useState('');
 
@@ -68,8 +69,6 @@ const ScoreModal = () => {
           body: JSON.stringify({username})
         });
 
-        console.log(response)
-
         if(!response.ok) {
 
           throw Error();
@@ -87,10 +86,6 @@ const ScoreModal = () => {
       }
     }
 
-
-
-
-    
   }
 
   useEffect(() => {
@@ -118,11 +113,9 @@ const ScoreModal = () => {
 
           const timeDif = json.timeScore
 
-          let ss = ("0" + Math.floor((timeDif / 1000) % 60)).slice(-2);
-          let mm = ("0" + Math.floor((timeDif / 60000) % 60)).slice(-2);
-          let hh = ("0" + Math.floor((timeDif / 60000 / 60) % 60)).slice(-2);
+          const hhmmss = converTimeHHMMSS(timeDif)
 
-          setFinalScore(`${hh}:${mm}:${ss}`);
+          setFinalScore(hhmmss);
           setIsLoading(false)
         }
 

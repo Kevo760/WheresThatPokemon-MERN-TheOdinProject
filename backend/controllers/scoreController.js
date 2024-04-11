@@ -9,7 +9,7 @@ exports.get_all_scores = asyncHandler(async(req, res, next) => {
         "username": {
             "$exists": true
         },
-    }).sort({ 'timeScore': 1}).limit(10);
+    }).limit(10);
 
 
     if(!getAllScores || getAllScores.length === 0) {

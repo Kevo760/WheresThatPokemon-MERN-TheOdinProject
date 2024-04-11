@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTimer } from '../hooks/useTimer';
 import { useCharacterIcon } from '../hooks/useCharacterIcon';
+import { converTimeMMSSMS } from '../functions/convertTime';
 
 
 const TimerbarBox = styled.div`
@@ -54,9 +55,7 @@ const Timerbar = () => {
   const { time } = useTimer();
 
 
-  let milliseconds = ("0" + Math.floor((time / 10) % 100)).slice(-2);
-  let seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
-  let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
+  let mmssms = converTimeMMSSMS(time)
 
   useEffect(() => {
 
@@ -85,7 +84,7 @@ const Timerbar = () => {
         <hr></hr>
         <div className='time-box'>
           <p>Estimated Time:</p>
-          <p className='time-text'>{minutes + ':' + seconds + ':' + milliseconds}</p>
+          <p className='time-text'>{mmssms}</p>
         </div>
         
     </TimerbarBox>
