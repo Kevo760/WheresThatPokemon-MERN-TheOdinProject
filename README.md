@@ -37,7 +37,7 @@ This is a solution to the [Project: Where's Waldo (A Photo Tagging App)](https:/
 
 ### Links
 
-- Solution URL: []
+- Solution URL: [https://github.com/Kevo760/WheresThatPokemon-MERN-TheOdinProject]
 - Live Site URL: []
 
 ## My process
