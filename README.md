@@ -30,10 +30,9 @@ This is a solution to the [Project: Where's Waldo (A Photo Tagging App)](https:/
 
 ### Screenshot
 
-![](./screnshots/home.JPG)
-![](./screnshots/game.JPG)
-![](./screnshots/addpost.JPG)
-![](./screnshots/scores.JPG)
+![](./screenshots/home.jpg)
+![](./screenshots/game.jpg)
+![](./screenshots/scores.jpg)
 
 
 ### Links
