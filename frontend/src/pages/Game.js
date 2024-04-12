@@ -84,7 +84,7 @@ export const Game = () => {
     checkData()
     checkAllFound()
 
-  },[scoreID, spearow, darumaka, galvantula, spearowFound, darumakaFound, galvantulaFound])
+  },[scoreID, spearow, darumaka, galvantula, charError, scoreError, dispatchCharacData, dispatchScoreData, navigate])
 
   return (
     <>
